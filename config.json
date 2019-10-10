@@ -1,0 +1,40 @@
+{
+    /* 
+     * If a directive is specified more than once,
+     * the first one will be active.
+     */
+
+    // If true, there will only be one process
+    "debug": false,
+    // If true, julia run as daemon.
+    // Enabled only when debug = false 
+    "daemon": true,
+    // Number of workers
+    "worker": 8, // no more than cpu cores
+    // Timeout of inactive connection. In second
+    "timeout": 30,
+
+    "port": 8000,
+    // If relative path, it is relative to the INSTALL_DIR in Makefile
+    // else, specify an absolute path
+    "root": "/var/www",
+    /*
+     * The order the locations specified, 
+     * is the order they are matched.
+     * So, to make "/static/" matched, it must
+     * be specified before "/".
+     */
+    "locations": [
+        ["/static/", {
+            // Not supported yet
+            "index": ["index.html", "index.htm"] 
+        }],
+        ["/", {}]
+        /*,
+        ["/", {
+            "pass": ["127.0.0.1", 3030],
+            "protocol": "uwsgi" // May support fastcgi in the future
+        }]
+        */
+    ]
+}
