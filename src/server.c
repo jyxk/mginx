@@ -2,7 +2,7 @@
  * @Author: Xiuxu Jin(jyxk)
  * @Date: 2019-10-10 15:01:43
  * @LastEditors: Xiuxu Jin
- * @LastEditTime: 2019-10-10 19:25:29
+ * @LastEditTime: 2019-10-12 14:44:28
  * @Description: file content
  * @Email: jyxking007@gmail.com
  */
@@ -141,6 +141,7 @@ int main(int argc, char* argv[]) {
     }
     if (get_pid() != 0) {
         ju_error("mginx has already been running...");
+        ju_log("mginx has been running");
         exit(ERROR);
     }
     save_pid(getpid());
