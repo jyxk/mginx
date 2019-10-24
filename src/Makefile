@@ -7,8 +7,7 @@ SRCS = base/buffer.c base/list.c		\
        request.c response.c server.c	\
 	   util.c
 
-INSTALL_DIR = /usr/local/$(TARGET)/
-
+INSTALL_DIR = /home/jyxk/$(TARGET)/
 CFLAGS = -g -Wall -DINSTALL_DIR=\"$(INSTALL_DIR)\" -D_XOPEN_SOURCE -D_GNU_SOURCE -I./ -I../
 
 BIN_DIR = /usr/local/bin/

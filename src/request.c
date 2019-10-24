@@ -2,7 +2,7 @@
  * @Author: Xiuxu Jin(jyxk)
  * @Date: 2019-10-10 19:05:36
  * @LastEditors: Xiuxu Jin
- * @LastEditTime: 2019-10-22 22:57:30
+ * @LastEditTime: 2019-10-24 16:34:20
  * @Description: file content
  * @Email: jyxking007@gmail.com
  */
@@ -199,13 +199,21 @@ int handle_pass(connection_t* uc) {
 int handle_upstream(connection_t* uc) {
     request_t* r = uc->r;
     buffer_t* b = &r->sb;
+
+    struct sockaddr_in clientAddr;
+    int len = sizeof(clientAddr);
+    if (!getpeername(uc->fd, (struct sockaddr *)&clientAddr, (socklen_t *)&len)) {
+        ju_log("Client IP: %s", clientAddr.sin_addr);
+        ju_log("Client Port: %s", clientAddr.sin_port);
+    }
+
     int err = buffer_recv(b, uc->fd);
 
     connection_enable_out(r->c);
     if (err == OK) {
         // The connection has been closed by peer
-        char * hostAdd = r->host.data;
-        ju_log(hostAdd);
+        //char * hostAdd = r->host.data;
+        //ju_log(hostAdd);
         return ERROR;
     } else if (err == ERROR) {
         // Error in backend
@@ -290,6 +298,14 @@ int handle_response(connection_t* c) {
 int handle_request(connection_t* c) {
     request_t* r = c->r;
     buffer_t* b = &r->rb;
+
+    //struct sockaddr_in clientAddr;
+    //int len = sizeof(clientAddr);
+    //if (!getpeername(c->fd, (struct sockaddr *)&clientAddr, (socklen_t *)&len)) {
+    //    ju_log("Client IP: %s", clientAddr.sin_addr);
+    //    ju_log("Client Port: %s", clientAddr.sin_port);
+    //}
+
     int err = buffer_recv(b, c->fd);
     if (err != AGAIN) {
         // Client closed the connection or error occurred

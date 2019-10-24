@@ -5,7 +5,7 @@
      */
 
     // If true, there will only be one process
-    "debug": false,
+    "debug": true,
     // If true, julia run as daemon.
     // Enabled only when debug = false 
     "daemon": true,
