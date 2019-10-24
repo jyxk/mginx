@@ -30,11 +30,6 @@
             "index": ["index.html", "index.htm"] 
         }],
         ["/", {}]
-        /*,
-        ["/", {
-            "pass": ["127.0.0.1", 3030],
-            "protocol": "uwsgi" // May support fastcgi in the future
-        }]
-        */
+
     ]
 }

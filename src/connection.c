@@ -1,3 +1,11 @@
+/*
+ * @Author: Xiuxu Jin(jyxk)
+ * @Date: 2019-10-10 11:54:55
+ * @LastEditors: Xiuxu Jin
+ * @LastEditTime: 2019-10-23 09:48:07
+ * @Description: file content
+ * @Email: jyxking007@gmail.com
+ */
 #include "server.h"
 
 #define MAX_CONNECTION  (10000)
@@ -12,7 +20,7 @@ static int heap_size = 0;
 static connection_t* connections[MAX_CONNECTION + 1] = {NULL};
 
 connection_t* open_connection(int fd) {
-    // Disable Nagle algorithm
+
     int on = 1;
     setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &on, sizeof(on));
 

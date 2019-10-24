@@ -1,5 +1,5 @@
-#ifndef _JULIA_UTIL_H_
-#define _JULIA_UTIL_H_
+#ifndef _MGINX_UTIL_H_
+#define _MGINX_UTIL_H_
 
 #define OK                  (0)
 #define AGAIN               (1)

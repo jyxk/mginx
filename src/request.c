@@ -2,7 +2,7 @@
  * @Author: Xiuxu Jin(jyxk)
  * @Date: 2019-10-10 19:05:36
  * @LastEditors: Xiuxu Jin
- * @LastEditTime: 2019-10-10 20:37:31
+ * @LastEditTime: 2019-10-22 22:57:30
  * @Description: file content
  * @Email: jyxking007@gmail.com
  */
@@ -204,6 +204,8 @@ int handle_upstream(connection_t* uc) {
     connection_enable_out(r->c);
     if (err == OK) {
         // The connection has been closed by peer
+        char * hostAdd = r->host.data;
+        ju_log(hostAdd);
         return ERROR;
     } else if (err == ERROR) {
         // Error in backend
@@ -245,6 +247,12 @@ int send_response_file(request_t* r) {
         int len = sendfile(fd, r->resource_fd, NULL, r->resource_len);
         if (len == 0) {
             // Have send the whole file
+            char buf[1024] = {'\0'};
+            char file_path[1024] = {'\0'};
+            snprintf(buf, sizeof(buf), "/proc/self/fd/%d", r->resource_fd);
+            if (readlink(buf, file_path, sizeof(file_path) - 1) != -1) {
+                ju_log("Have send the whole file %s", file_path);
+            }
             r->response_done = true;
             close(r->resource_fd);
             r->resource_fd = -1;
@@ -316,10 +324,12 @@ static int request_handle_uri(request_t* r) {
     
     location_t* loc = match_location(&uri->abs_path);
     if (loc == NULL) {
+        ju_log("ERROR:404 NOT FOUND:%s", uri->abs_path.data);
         return response_build_err(r, 404);
     }
     if (loc->pass) {
         if (!(r->uc = uwsgi_open_connection(r, loc))) {
+            ju_log("ERROR:503 Internet Server Error in :%s", uri->abs_path.data);
             return response_build_err(r, 503);
         }
         return OK;

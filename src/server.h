@@ -1,5 +1,5 @@
-#ifndef _JULIA_SERVER_H_
-#define _JULIA_SERVER_H_
+#ifndef _MGINX_SERVER_H_
+#define _MGNIX_SERVER_H_
 
 #include "base/buffer.h"
 #include "base/map.h"
@@ -8,7 +8,6 @@
 #include "base/string.h"
 #include "base/vector.h"
 #include "event.h"
-#include "server.h"
 #include "util.h"
 
 #include <assert.h>

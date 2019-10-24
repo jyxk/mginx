@@ -1,5 +1,5 @@
-#ifndef _JULIA_EVENT_H_
-#define _JULIA_EVENT_H_
+#ifndef _MGINX_EVENT_H_
+#define _MGINX_EVENT_H_
 
 #include <stdint.h>
 #include <stdalign.h>

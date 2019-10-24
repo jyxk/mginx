@@ -2,7 +2,7 @@
  * @Author: Xiuxu Jin(jyxk)
  * @Date: 2019-10-10 15:01:43
  * @LastEditors: Xiuxu Jin
- * @LastEditTime: 2019-10-12 14:44:28
+ * @LastEditTime: 2019-10-19 08:51:27
  * @Description: file content
  * @Email: jyxking007@gmail.com
  */
@@ -40,7 +40,7 @@ static int get_pid(void) {
 }
 
 static void send_signal(const char* signal) {
-    if (strncasecmp(signal, "stop", 4) == 0) {
+    if ((signal != NULL) && (strncasecmp(signal, "stop", 4) == 0)) {
         kill(-get_pid(), SIGINT);
     } else {
         usage();
