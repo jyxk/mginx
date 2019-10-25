@@ -2,7 +2,7 @@
  * @Author: Xiuxu Jin(jyxk)
  * @Date: 2019-10-10 15:01:43
  * @LastEditors: Xiuxu Jin
- * @LastEditTime: 2019-10-19 08:51:27
+ * @LastEditTime: 2019-10-25 10:39:22
  * @Description: file content
  * @Email: jyxking007@gmail.com
  */
@@ -79,7 +79,7 @@ static int startup(uint16_t port) {
     memset((void*)&server_addr, 0, addr_len);
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(port);
-    server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    server_addr.sin_addr.s_addr = server_cfg.address;
     if (bind(listen_fd, (struct sockaddr*)&server_addr, addr_len) < 0) {
         return ERROR;
     }
@@ -107,12 +107,27 @@ static int server_init(void) {
 }
 
 static void accept_connection(int listen_fd) {
+
+    struct sockaddr_in clientAddr;
+    int addrLength = sizeof(clientAddr);
+    memset(&clientAddr, 0, sizeof(struct sockaddr_in)); 
+
     while (true) {
-        int c_fd = accept(listen_fd, NULL, NULL);
+
+        int c_fd = accept(listen_fd, (struct sockaddr *)&clientAddr, (socklen_t *)&addrLength);
         if (c_fd == ERROR) {
             ERR_ON((errno != EWOULDBLOCK), "accept");
             break;
         }
+
+        char *clientIP = malloc(16*sizeof(char));
+        inet_ntop(AF_INET, &clientAddr.sin_addr, clientIP, 16);
+        ju_log("Client Address: %s : %u ", clientIP, ntohs(clientAddr.sin_port));
+        //ju_log("Client port: %u", clientAddr.sin_port);
+
+        free(clientIP);
+
+        
         open_connection(c_fd);
     }
 }
@@ -168,6 +183,7 @@ int main(int argc, char* argv[]) {
 
 work:;
     int listen_fd;
+    char *server_ip = malloc(sizeof(char)*16);
     if (server_init() != OK ||
         (listen_fd = startup(server_cfg.port)) < 0) {
         ju_error("startup server failed");        
@@ -175,7 +191,9 @@ work:;
     }
     
     ju_log("mginx started...");
-    ju_log("listening at port: %u", server_cfg.port);
+    inet_ntop(AF_INET, (struct sin_addr*)&server_cfg.address, server_ip, 16);
+    ju_log("listening at address: %s:%u", server_ip, server_cfg.port);
+    free(server_ip);
     assert(add_listener(&listen_fd) != ERROR);
 
 wait:;

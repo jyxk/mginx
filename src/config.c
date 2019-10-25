@@ -1,3 +1,11 @@
+/*
+ * @Author: Xiuxu Jin(jyxk)
+ * @Date: 2019-10-24 17:43:21
+ * @LastEditors: Xiuxu Jin
+ * @LastEditTime: 2019-10-24 18:39:05
+ * @Description: file content
+ * @Email: jyxking007@gmail.com
+ */
 #include "server.h"
 
 #include "base/string.h"
@@ -59,6 +67,23 @@ int config_load(config_t* cfg) {
     CFG_ERR_ON(timeout_val == NULL || timeout_val->t != JUSON_INTEGER,
                "timeout not specified or error type");
     cfg->timeout = timeout_val->ival;
+
+    juson_value_t* addr_val = juson_object_get(root, "address");
+    //string_t address;
+    if (addr_val == NULL || addr_val->t != JUSON_STRING) {
+        //addr_val = "127.0.0.1";
+        int addr_status = inet_pton(AF_INET, "127.0.0.1", &(cfg->address));
+        CFG_ERR_ON(addr_status < 0, "bind address error!")
+    } 
+    else {
+        string_t address = juson_val2str(addr_val);
+        int addr_status = inet_pton(AF_INET, address.data, &(cfg->address));
+        CFG_ERR_ON(addr_status < 0, "bind address error!")
+    }
+
+    //CFG_ERR_ON(addr_val == NULL || addr_val->t != JUSON_STRING,
+    //            "doc address not specified or error type");
+    
 
     juson_value_t* port_val = juson_object_get(root, "port");
     if (port_val == NULL || port_val->t != JUSON_INTEGER) {

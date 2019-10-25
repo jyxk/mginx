@@ -2,7 +2,7 @@
  * @Author: Xiuxu Jin(jyxk)
  * @Date: 2019-10-10 19:05:36
  * @LastEditors: Xiuxu Jin
- * @LastEditTime: 2019-10-24 16:34:20
+ * @LastEditTime: 2019-10-24 23:00:59
  * @Description: file content
  * @Email: jyxking007@gmail.com
  */
@@ -200,12 +200,14 @@ int handle_upstream(connection_t* uc) {
     request_t* r = uc->r;
     buffer_t* b = &r->sb;
 
-    struct sockaddr_in clientAddr;
-    int len = sizeof(clientAddr);
-    if (!getpeername(uc->fd, (struct sockaddr *)&clientAddr, (socklen_t *)&len)) {
-        ju_log("Client IP: %s", clientAddr.sin_addr);
-        ju_log("Client Port: %s", clientAddr.sin_port);
-    }
+    //struct sockaddr_in clientAddr;
+    //int len = sizeof(clientAddr);
+    //if (!getpeername(uc->fd, (struct sockaddr *)&clientAddr, (socklen_t *)&len)) {
+    //    ju_log("Client IP: %s", clientAddr.sin_addr);
+    //    ju_log("Client Port: %s", clientAddr.sin_port);
+    //}
+
+    //ju_log("handle_upstream");
 
     int err = buffer_recv(b, uc->fd);
 
@@ -298,13 +300,6 @@ int handle_response(connection_t* c) {
 int handle_request(connection_t* c) {
     request_t* r = c->r;
     buffer_t* b = &r->rb;
-
-    //struct sockaddr_in clientAddr;
-    //int len = sizeof(clientAddr);
-    //if (!getpeername(c->fd, (struct sockaddr *)&clientAddr, (socklen_t *)&len)) {
-    //    ju_log("Client IP: %s", clientAddr.sin_addr);
-    //    ju_log("Client Port: %s", clientAddr.sin_port);
-    //}
 
     int err = buffer_recv(b, c->fd);
     if (err != AGAIN) {

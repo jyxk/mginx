@@ -65,6 +65,7 @@ typedef struct {
 } location_t;
 
 typedef struct {
+    int address;
     uint16_t port;
     int root_fd;
     bool debug;
