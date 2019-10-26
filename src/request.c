@@ -2,7 +2,7 @@
  * @Author: Xiuxu Jin(jyxk)
  * @Date: 2019-10-10 19:05:36
  * @LastEditors: Xiuxu Jin
- * @LastEditTime: 2019-10-24 23:00:59
+ * @LastEditTime: 2019-10-25 17:32:37
  * @Description: file content
  * @Email: jyxking007@gmail.com
  */
@@ -391,7 +391,7 @@ static int request_handle_request_line(request_t* r) {
     if (r->version.major != 1 || r->version.minor > 2) {
         return response_build_err(r, 505);
     }
-    
+    ju_log("Http request line: %s", r->request_line.data);
     // HTTP/1.1: persistent c default
     r->keep_alive = r->version.minor == 1;
 
