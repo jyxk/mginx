@@ -2,7 +2,7 @@
  * @Author: Xiuxu Jin(jyxk)
  * @Date: 2019-10-10 19:05:36
  * @LastEditors: Xiuxu Jin
- * @LastEditTime: 2019-10-25 17:32:37
+ * @LastEditTime: 2019-10-26 22:28:51
  * @Description: file content
  * @Email: jyxking007@gmail.com
  */
@@ -200,22 +200,11 @@ int handle_upstream(connection_t* uc) {
     request_t* r = uc->r;
     buffer_t* b = &r->sb;
 
-    //struct sockaddr_in clientAddr;
-    //int len = sizeof(clientAddr);
-    //if (!getpeername(uc->fd, (struct sockaddr *)&clientAddr, (socklen_t *)&len)) {
-    //    ju_log("Client IP: %s", clientAddr.sin_addr);
-    //    ju_log("Client Port: %s", clientAddr.sin_port);
-    //}
-
-    //ju_log("handle_upstream");
-
     int err = buffer_recv(b, uc->fd);
 
     connection_enable_out(r->c);
     if (err == OK) {
         // The connection has been closed by peer
-        //char * hostAdd = r->host.data;
-        //ju_log(hostAdd);
         return ERROR;
     } else if (err == ERROR) {
         // Error in backend
@@ -391,7 +380,12 @@ static int request_handle_request_line(request_t* r) {
     if (r->version.major != 1 || r->version.minor > 2) {
         return response_build_err(r, 505);
     }
-    ju_log("Http request line: %s", r->request_line.data);
+    {
+        char delims[] = "\n";
+        char *result = strtok(r->request_line.data, delims);
+        ju_log("Http request line: %s", result);
+
+    }
     // HTTP/1.1: persistent c default
     r->keep_alive = r->version.minor == 1;
 

@@ -2,7 +2,7 @@
  * @Author: Xiuxu Jin(jyxk)
  * @Date: 2019-10-10 15:01:43
  * @LastEditors: Xiuxu Jin
- * @LastEditTime: 2019-10-10 15:01:43
+ * @LastEditTime: 2019-10-26 23:23:59
  * @Description: file content
  * @Email: jyxking007@gmail.com
  */
@@ -344,6 +344,14 @@ static void response_put_status_line(request_t* r) {
     string_t status = status_repr(r->status);
     buffer_append_string(b, &status);
     buffer_append_cstring(b, CRLF);
+
+    {
+        char delims[] = "\n";
+        char temp[2*1024+1] = "";
+        strcpy(temp, b->data);
+        char *result = strtok(temp, delims);
+        ju_log("Response put status line: %s", result);
+    }
 }
 
 static void response_put_date(request_t* r) {
